@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# 指定目标目录
-target_directory="/Applications/Lark.app/Contents/Frameworks/Lark Framework.framework/Resources/webcontent"
+# 检查输入参数
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <target_directory>"
+    exit 1
+fi
+
+# 指定目标目录为第一个输入参数
+target_directory="$1"
 
 echo "1. 查找所有asar文件..."
 # 1. 遍历目录，找出所有asar文件
