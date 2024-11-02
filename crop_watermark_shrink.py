@@ -1,6 +1,10 @@
 import os
+import sys
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
+
+default_font_path_bold = "./MiSans/ttf/MiSans-Bold.ttf"
+default_font_path_regular = "./MiSans/ttf/MiSans-Regular.ttf"
 
 def add_watermarks(image, text1="茶友", text2="供图", directory_name="", font_path_bold="./MiSans/ttf/MiSans-Bold.ttf", font_path_regular="./MiSans/ttf/MiSans-Regular.ttf", font_size_regular=24, font_size_bold=36):
     # 获取图片的宽高
@@ -89,7 +93,7 @@ def process_images_in_directory(directory):
                             
                             # 3. 添加水印，左下角水印为所属目录名称
                             directory_name = os.path.basename(root)
-                            watermarked_img = add_watermarks(resized_img, directory_name=directory_name)
+                            watermarked_img = add_watermarks(resized_img, directory_name=directory_name,font_path_bold=default_font_path_bold, font_path_regular=default_font_path_regular,)
                             
                             # 保存处理后的图片到新文件夹，文件名不变
                             cropped_img_path = os.path.join(output_folder, file)
@@ -98,6 +102,19 @@ def process_images_in_directory(directory):
                 except Exception as e:
                     print(f"处理图片 {img_path} 时出错: {e}")
 
+def check_font_paths(font_path_bold, font_path_regular):
+    """检查字体文件是否存在，不存在则退出程序"""
+    if not os.path.exists(font_path_bold):
+        print(f"字体文件不存在: {font_path_bold}")
+        sys.exit(1)
+    if not os.path.exists(font_path_regular):
+        print(f"字体文件不存在: {font_path_regular}")
+        sys.exit(1)
+    print("字体文件检查通过。")
+
 if __name__ == "__main__":
+    # 检查字体路径是否存在
+
+    check_font_paths(default_font_path_bold,default_font_path_regular)
     input_directory = input("请输入要处理的目录路径：")
     process_images_in_directory(input_directory)
